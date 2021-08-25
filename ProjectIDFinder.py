@@ -15,11 +15,13 @@ import undetected_chromedriver.v2 as uc
 # from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import logging
+import urllib.parse
 
 
 class ProjectIDFinder:
     google_cache: str = 'https://webcache.googleusercontent.com/search?q=cache:'
     url_prefix = google_cache
+    url_suffix = '&strip=1&vwsrc=0'
     project_id: int = ''
     driver = None
     uses_google_cache: bool = True
@@ -62,7 +64,7 @@ class ProjectIDFinder:
 
     def send_request(self, curseforge_url: str):
 
-        self.driver.get(self.url_prefix + curseforge_url)
+        self.driver.get(self.url_prefix + urllib.parse.quote(curseforge_url) + self.url_suffix)
 
         # polling technique is cool, but seems to somehow trip up Cloudfare's anti-bot detection
         # wait = WebDriverWait(driver, 100, poll_frequency=2)
