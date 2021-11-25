@@ -1,11 +1,11 @@
 import csv
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Iterator
 import unicodedata
-from DBWrapperADT import AbstractDBWrapper
+from lib.AbstractID2NameDB import AbstractID2NameDB
 
 
-class DBWrapper(AbstractDBWrapper):
+class ID2NameDB(AbstractID2NameDB):
     """ This implementation in particular is the most garbage thing I could possibly make.
     Instead of using a real db backend, we just muck about with a separate table storing everything in plaintext CSV"""
 
@@ -34,7 +34,7 @@ class DBWrapper(AbstractDBWrapper):
         self.commit()
 
     def commit(self) -> None:
-        # gets 'unknown encoder: ascii' error if I don't write specify encoding >.<
+        # gets 'unknown encoder: ascii' error if I don't specify encoding >.<
         with self.fpath.open('w', encoding='utf-8') as fhandle:
             writer = csv.DictWriter(fhandle, fieldnames=self.fields)
             for name in self.db_dict.keys():
@@ -46,6 +46,14 @@ class DBWrapper(AbstractDBWrapper):
             return int(self.db_dict[name])
         except KeyError:
             return None
+
+    def id_iter(self) -> Iterator[int]:
+        for _id in self.db_dict.values():
+            yield _id
+
+    def slug_iter(self) -> Iterator[str]:
+        for slug in self.db_dict.keys():
+            yield slug
 
     def query_project_name(self, id_num) -> Optional[str]:
         try:

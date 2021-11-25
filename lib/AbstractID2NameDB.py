@@ -2,11 +2,15 @@ from abc import abstractmethod, ABC
 from typing import Optional
 
 
-class AbstractDBWrapper(ABC):
-    """ Crude database wrapper ADT, allowing us to easily swap out different DB implementations. """
+class AbstractID2NameDB(ABC):
+    """ Crude database wrapper ADT, allowing us to easily swap out different DB implementations.
+    The purpose is to define the key database operations for storing/retrieving information about project IDs,
+    and how they relate to slugs (the project name that shows up in CurseForge URL). """
 
     @abstractmethod
     def __init__(self, fname: str):
+        """ Load the database if possible.
+        Must be loaded first thing so that we can check against it when queries are made. """
         raise NotImplementedError
 
     @abstractmethod

@@ -1,0 +1,11 @@
+*.log
+venv
+__pycache__
+~*
+modlist.conf
+*.db
+*.bak
+*.txt
+*.sqlite
+.idea/
+*.ipr

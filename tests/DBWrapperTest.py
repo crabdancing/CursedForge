@@ -1,9 +1,9 @@
 import unittest
-from DBWrapperADT_GarbageCSVTables import DBWrapper
+from lib.Id2NameDB_CSV import ID2NameDB
 
 
 class DBWrapperADTTest(unittest.TestCase):
-    db = DBWrapper()
+    db = ID2NameDB()
 
     def test_retrieve_from_db(self):
         # I don't know why the internet keeps making this dumb joke, but I'll do my part I guess
