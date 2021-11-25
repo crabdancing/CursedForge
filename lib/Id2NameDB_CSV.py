@@ -1,4 +1,5 @@
 import csv
+import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Iterator
 import unicodedata
@@ -17,6 +18,8 @@ class ID2NameDB(AbstractID2NameDB):
     fields: List[str] = ['name', 'id']
 
     def __init__(self, fname: str = 'id2name.csv'):
+        self.logger = logging.getLogger(__name__)
+
         self.fpath = Path(fname)
         if self.fpath.exists():
             # load all into memory as dict, then close

@@ -17,8 +17,11 @@ from selenium.webdriver.common.by import By
 import logging
 import urllib.parse
 
+from lib import SimpleLogger
+
 
 class ProjectIDFinder:
+    logger = logging.getLogger(__name__)
     google_cache: str = 'https://webcache.googleusercontent.com/search?q=cache:'
     url_prefix = google_cache
     url_suffix = '&strip=1&vwsrc=0'
@@ -27,14 +30,12 @@ class ProjectIDFinder:
     uses_google_cache: bool = True
     pattern = re.compile(r'<span>Project ID</span>\W*<span>(\d*)</span>')
     options = uc.ChromeOptions()
-    logger = logging.getLogger(__name__)
 
     # user_agent = 'Mozilla/5.0 (X11; Linux x86_64; rv:90.0) Gecko/20100101 Firefox/90.0'
 
-    def __init__(self, log_handlers: List[logging.StreamHandler] = None, default_profile_name: Path = Path('cursedforge-chromium'), options=None):
+    def __init__(self, default_profile_name: Path = Path('cursedforge-chromium'), options=None):
+        self.logger = logging.getLogger(__name__)
 
-        for log_handler in log_handlers:
-            self.logger.addHandler(log_handler)
         if options:
             self.options = options
         else:

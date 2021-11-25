@@ -6,7 +6,7 @@ import logging
 import sys
 from typing import List
 
-log_file_name: str = '../main.log'
+log_file_name: str = 'main.log'
 
 root_logger = logging.root
 # This ensures that all messages can get through at root level
@@ -19,7 +19,7 @@ log_formatter = logging.Formatter("%(asctime)s:%(levelname)s %(message)s")
 
 stream_handler: logging.StreamHandler = logging.StreamHandler(sys.stdout)
 stream_handler.setFormatter(log_formatter)
-stream_handler.setLevel(logging.INFO)
+stream_handler.setLevel(logging.WARNING)
 root_logger.addHandler(stream_handler)
 
 file_handler: logging.StreamHandler = logging.FileHandler(log_file_name, mode='w', encoding='utf-8')

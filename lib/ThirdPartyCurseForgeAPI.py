@@ -8,24 +8,20 @@ from typing import List, Union, Optional
 import requests
 import requests_cache
 import re
+
 from lib import SimpleLogger
-from lib.SimpleLogger import stream_handler, file_handler
 
 
 class ThirdPartyCurseForgeAPI:
-    logger = logging.getLogger(__name__)
     """ Can access a third party CurseForge API to retrieve details.
     Uses request_cache so that it's not too rude when running lots of tests or re-building modpack. """
 
     def __init__(self, target_loader_name='Forge', target_game_version='1.16.5',
                  target_game_version_regex='1.16.*', cache_expire_time: int = 86400, log_handlers=None):
-        # cache_expire_time -- number of seconds before dumping old cache. Is set to 1 day by default.
-        if log_handlers is None:
-            log_handlers = [stream_handler, file_handler]
-        for log_handler in log_handlers:
-            self.logger.addHandler(log_handler)
-        self.logger.handlers
+        self.logger = logging.getLogger(__name__)
 
+
+        # cache_expire_time -- number of seconds before dumping old cache. Is set to 1 day by default.
 
         # pretty sure `install_cache` won't actually apply outside of our module & class scope here,
         # but I haven't bothered to actually check :S
@@ -37,7 +33,7 @@ class ThirdPartyCurseForgeAPI:
         self.target_game_version = target_game_version
         self.target_game_version_regex = target_game_version_regex
 
-    def get_dl_link(self, my_project_id: int,
+    def get_dl_link(self, my_project_id: str,
                     target_game_version_glob='1.16*') -> Optional[str]:
         # for examples of what this looks like:
         # https://curse.nikky.moe/api/addon/377282/files
@@ -48,6 +44,7 @@ class ThirdPartyCurseForgeAPI:
         # even if there was a better match further down the `dl_items` list...
         for match_method in self.match_methods:
             for dl_item in dl_items:
+                self.logger.debug(f'Download info item in JSON: {dl_item}')
                 if match_method(dl_item):
                     dl_url: str = dl_item['downloadUrl']
                     self.logger.info(f'Download URL found: {dl_url}')
