@@ -2,6 +2,7 @@
 
 # Copyleft (C) Alexandria Pettit 2021, GNU GPLv3
 
+# TODO: replace f-string formatting with logging-based so that string ops don't execute when logs aren't being produced
 # TODO: add click-powered console UI? Need to dust off my old skills with that library.
 
 # TODO: add actual downloading functionality (With progress bar!?)
